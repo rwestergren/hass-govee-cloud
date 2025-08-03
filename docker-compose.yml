@@ -1,0 +1,11 @@
+services:
+  homeassistant:
+    container_name: govee_cloud_ha
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - ./ha-config:/config
+      - ./custom_components/govee_cloud:/config/custom_components/govee_cloud
+    ports:
+      - "8123:8123"
+    restart: unless-stopped
+    privileged: true

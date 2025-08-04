@@ -1,7 +1,7 @@
 """Config flow for Govee Cloud integration."""
 
 import logging
-from typing import Any, Dict, Optional
+from typing import Any
 
 import voluptuous as vol
 from homeassistant import config_entries
@@ -15,7 +15,7 @@ from .const import DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 
-async def validate_input(hass: HomeAssistant, data: Dict[str, Any]) -> Dict[str, Any]:
+async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect."""
     api_client = GoveeAPI(hass, data[CONF_EMAIL], data[CONF_PASSWORD])
 
@@ -31,7 +31,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     VERSION = 1
 
     async def async_step_user(
-        self, user_input: Optional[Dict[str, Any]] = None
+        self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle the initial step."""
         if user_input is None:

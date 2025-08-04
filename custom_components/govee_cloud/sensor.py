@@ -1,7 +1,7 @@
 """Sensor platform for Govee Cloud integration."""
 
 import logging
-from typing import Any, Dict, Optional
+from typing import Any
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -74,7 +74,7 @@ class GoveeBaseSensor(CoordinatorEntity, SensorEntity):
         coordinator: DataUpdateCoordinator,
         api_client,
         device_id: str,
-        device_info: Dict[str, Any],
+        device_info: dict[str, Any],
         config_entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -101,14 +101,14 @@ class GoveeBaseSensor(CoordinatorEntity, SensorEntity):
         """Return True if entity is available."""
         return self.coordinator.last_update_success and self._get_device() is not None
 
-    def _get_device(self) -> Optional[Dict[str, Any]]:
+    def _get_device(self) -> dict[str, Any] | None:
         """Get device data from coordinator."""
         for device in self.coordinator.data:
             if device.get("device") == self.device_id:
                 return device
         return None
 
-    def _get_sensor_data(self) -> Dict[str, Any]:
+    def _get_sensor_data(self) -> dict[str, Any]:
         """Get sensor data for this device."""
         device = self._get_device()
         if device is None:
@@ -124,7 +124,7 @@ class GoveeTemperatureSensor(GoveeBaseSensor):
         coordinator: DataUpdateCoordinator,
         api_client,
         device_id: str,
-        device_info: Dict[str, Any],
+        device_info: dict[str, Any],
         config_entry: ConfigEntry,
     ) -> None:
         """Initialize the temperature sensor."""
@@ -138,7 +138,7 @@ class GoveeTemperatureSensor(GoveeBaseSensor):
         self._attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
 
     @property
-    def native_value(self) -> Optional[float]:
+    def native_value(self) -> float | None:
         """Return the state of the sensor."""
         sensor_data = self._get_sensor_data()
         return sensor_data.get("temperature")
@@ -152,7 +152,7 @@ class GoveeHumiditySensor(GoveeBaseSensor):
         coordinator: DataUpdateCoordinator,
         api_client,
         device_id: str,
-        device_info: Dict[str, Any],
+        device_info: dict[str, Any],
         config_entry: ConfigEntry,
     ) -> None:
         """Initialize the humidity sensor."""
@@ -166,7 +166,7 @@ class GoveeHumiditySensor(GoveeBaseSensor):
         self._attr_native_unit_of_measurement = PERCENTAGE
 
     @property
-    def native_value(self) -> Optional[float]:
+    def native_value(self) -> float | None:
         """Return the state of the sensor."""
         sensor_data = self._get_sensor_data()
         return sensor_data.get("humidity")
@@ -180,7 +180,7 @@ class GoveeBatterySensor(GoveeBaseSensor):
         coordinator: DataUpdateCoordinator,
         api_client,
         device_id: str,
-        device_info: Dict[str, Any],
+        device_info: dict[str, Any],
         config_entry: ConfigEntry,
     ) -> None:
         """Initialize the battery sensor."""
@@ -194,7 +194,7 @@ class GoveeBatterySensor(GoveeBaseSensor):
         self._attr_native_unit_of_measurement = PERCENTAGE
 
     @property
-    def native_value(self) -> Optional[int]:
+    def native_value(self) -> int | None:
         """Return the state of the sensor."""
         sensor_data = self._get_sensor_data()
         return sensor_data.get("battery")

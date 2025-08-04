@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import time
-from typing import Dict, List, Optional
 
 import jwt
 import requests
@@ -31,7 +30,7 @@ class GoveeAPI:
         celsius = api_value / 100.0
         return round(celsius, 1)
 
-    def _load_token(self) -> Optional[str]:
+    def _load_token(self) -> str | None:
         """Load JWT token from file if it exists and is not expired."""
         if not os.path.exists(self._token_file):
             _LOGGER.debug("No cached token found")
@@ -130,7 +129,7 @@ class GoveeAPI:
         if self._token is None:
             self._token = self._login()
 
-    def get_devices(self) -> List[Dict]:
+    def get_devices(self) -> list[dict]:
         """Get list of thermometer devices."""
         self._ensure_authenticated()
 
@@ -172,7 +171,7 @@ class GoveeAPI:
         _LOGGER.debug("Found %d thermometer devices", len(thermometers))
         return thermometers
 
-    def extract_device_data(self, device: Dict) -> Dict:
+    def extract_device_data(self, device: dict) -> dict:
         """Extract temperature and other data from device."""
         device_ext = device.get("deviceExt", {})
         last_device_data_str = device_ext.get("lastDeviceData", "{}")
